@@ -1,33 +1,37 @@
 <template>
-  <div :class="{'main': classAtivo}">
-    <div :class="{'top': classAtivo}">
+  <span v-if="sucesso" class="sucesso">{{ sucesso }}</span>
+  <div class="main">
+    <div class="top">
       <h1>Detalhes do Evento</h1>
     </div>
-    <div :class="{'abasBox': classAtivo}">
+    <div class="abasBox">
        <button @click="trocarAba('dados')" :class="{'abaAtiva': abaAtiva === 'dados'}">Dados do Evento</button>
        <button @click="trocarAba('participantes')" :class="{'abaAtiva': abaAtiva === 'participantes'}">Participantes</button>
     </div>
 
-    <div v-if="abaAtiva === 'dados'" :class="{'abaDados': classAtivo}">
+    <div v-if="abaAtiva === 'dados'" class="abaDados">
       <h2>Editar Evento</h2>
       <form @submit.prevent="salvarEvento">
         <label>
           <span>Nome*:</span>
-          <input v-model="evento.nome" id="nome" type="text" required />
+          <input v-model="evento.nome" id="nome" type="text"/>
+          <span v-if="nomeEventoEditErro" class="erro">{{ nomeEventoEditErro }}</span>
         </label>
         <label>
           <span>Data Inicial*:</span>
-          <input v-model="evento.datainicio" id="datainicio" type="date" required />
+          <input v-model="evento.datainicio" id="datainicio" type="date"/>
+          <span v-if="dataInicioEventoEditErro" class="erro">{{ dataInicioEventoEditErro }}</span>
         </label>
         <label>
           <span>Data Final*:</span>
-          <input v-model="evento.datafim" id="datafim" type="date" required />
+          <input v-model="evento.datafim" id="datafim" type="date"/>
+          <span v-if="dataFimEventoEditErro" class="erro">{{ dataFimEventoEditErro }}</span>
         </label>
         <button type="submit">Salvar</button>
       </form>
     </div>
 
-    <div v-if="abaAtiva === 'participantes'" :class="{'abaParticipantes': classAtivo}">
+    <div v-if="abaAtiva === 'participantes'" class="abaParticipantes">
       <h2>Participantes</h2>
       <button @click="abrirModalAdicionarParticipante">Adicionar Participante</button>
 
@@ -68,6 +72,7 @@
       :eventoId="evento.id"
       @fechar="fecharModalAdicionarParticipante"
       @participanteAdicionado="buscarEvento"
+      @sucesso="exibirMensagemSucesso"
     />
 
     <ModalEditarParticipante
@@ -75,6 +80,7 @@
       :participante="participanteParaEditar"
       @fechar="fecharModalEditarParticipante"
       @participanteAtualizado="buscarEvento"
+      @sucesso="exibirMensagemSucesso"
     />
 
     <ModalPresenca
@@ -82,6 +88,7 @@
       :participante="participanteParaPresenca"
       @fechar="fecharModalPresenca"
       @presencaRegistrada="buscarEvento"
+      @sucesso="exibirMensagemSucesso"
     />
   </div>
 </template>
@@ -114,9 +121,19 @@ export default {
       modalPresencaAberto: false,
       participanteParaEditar: null,
       participanteParaPresenca: null,
+      nomeEventoEditErro: '',
+      dataInicioEventoEditErro: '',
+      dataFimEventoEditErro: '',
+      sucesso: '',
     };
   },
   methods: {
+    exibirMensagemSucesso(mensagem) {
+      this.sucesso = mensagem;
+      setTimeout(() => {
+        this.sucesso = "";
+      }, 4000);
+    },
     trocarAba(aba) {
       this.abaAtiva = aba;
       this.modalAdicionarAberto = false;
@@ -124,19 +141,54 @@ export default {
       this.modalPresencaAberto = false;
     },
     async buscarEvento() {
-      const response = await axios.get(`/api/eventos/${this.$route.params.id}/mostrar`);
-      this.evento = response.data;
-      this.participantes = response.data.participantes;
+      try {
+        const response = await axios.get(`/api/eventos/${this.$route.params.id}/mostrar`);
+        this.evento = response.data;
+        this.participantes = response.data.participantes;
+      } catch (error) {
+        console.error("Erro ao buscar evento", error);
+      }
+
     },
     async salvarEvento() {
-      await axios.put(`/api/eventos/${this.$route.params.id}`, this.evento);
-      alert('Evento atualizado com sucesso!');
+      this.nomeEventoEditErro = '';
+      this.dataInicioEventoEditErro = '';
+      this.dataFimEventoEditErro = '';
+
+      try {
+        await axios.put(`/api/eventos/${this.$route.params.id}`, this.evento);
+        this.nomeEventoEditErro = '';
+        this.dataInicioEventoEditErro = '';
+        this.dataFimEventoEditErro = '';
+        this.sucesso = 'Evento atualizado com sucesso!';
+        
+        setTimeout(() => {
+          this.sucesso = '';
+        }, 4000);
+      } catch (error) {
+        if (error.response && error.response.status === 422) {
+            const errors = error.response.data.errors;
+          
+          if (errors.nome) {
+            this.nomeEventoEditErro = errors.nome[0];
+          }
+          if (errors.datainicio) {
+            this.dataInicioEventoEditErro = errors.datainicio[0];
+          }
+          if (errors.datafim) {
+            this.dataFimEventoEditErro = errors.datafim[0];
+          }
+        } else {
+          alert('Erro ao editar evento. Tente novamente.');
+        }
+      }
     },
     abrirModalAdicionarParticipante() {
       this.modalAdicionarAberto = true;
     },
     fecharModalAdicionarParticipante() {
       this.modalAdicionarAberto = false;
+      this.buscarEvento();
     },
     editarParticipante(id) {
       this.modalEditarAberto = true;
@@ -144,11 +196,12 @@ export default {
     },
     fecharModalEditarParticipante() {
       this.modalEditarAberto = false;
+      this.buscarEvento();
     },
     confirmarExclusaoParticipante(id) {
       if (confirm('Realmente deseja remover este participante?')) {
         axios.delete(`/api/participantes/${id}`);
-        this.buscarEvento(); // Atualizar participantes após exclusão
+        this.buscarEvento(); 
       }
     },
     abrirModalPresenca(participante) {
@@ -157,6 +210,7 @@ export default {
     },
     fecharModalPresenca() {
       this.modalPresencaAberto = false;
+      this.buscarEvento();
     },
   },
   mounted() {

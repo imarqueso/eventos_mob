@@ -50,6 +50,10 @@ class EventoController extends Controller
       ]);
 
       return Evento::create($request->all());
+    } catch (\Illuminate\Validation\ValidationException $e) {
+      return response()->json([
+        'errors' => $e->errors()
+      ], 422);
     } catch (\Exception $e) {
       Log::error('Erro ao criar evento: ' . $e->getMessage(), [
         'request' => $request->all(),
@@ -102,9 +106,28 @@ class EventoController extends Controller
 
   public function update(Request $request, $id)
   {
-    $evento = Evento::findOrFail($id);
-    $evento->update($request->all());
-    return $evento;
+    try {
+      $request->validate([
+        'nome' => 'required|string|max:255',
+        'datainicio' => 'required|date',
+        'datafim' => 'required|date|after_or_equal:datainicio',
+      ]);
+
+      $evento = Evento::findOrFail($id);
+      $evento->update($request->all());
+      return $evento;
+    } catch (\Illuminate\Validation\ValidationException $e) {
+      return response()->json([
+        'errors' => $e->errors()
+      ], 422);
+    } catch (\Exception $e) {
+      Log::error('Erro ao editar evento: ' . $e->getMessage(), [
+        'request' => $request->all(),
+        'exception' => $e
+      ]);
+
+      return response()->json(['error' => 'Erro ao editar evento.'], 500);
+    }
   }
 
   public function destroy($id)

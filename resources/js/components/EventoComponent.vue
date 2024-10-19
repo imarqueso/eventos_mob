@@ -1,21 +1,24 @@
 <template>
-  <div :class="{'main': classAtivo}">
-    <div :class="{'top': classAtivo}">
+  <div class="main">
+    <div class="top">
       <h1>Eventos</h1>
       <button @click="abrirModal">Cadastrar Novo</button>
     </div>
-    <div :class="{'filtroBox': classAtivo}">
+    <div class="filtroBox">
       <label>
         <span>Nome*:</span>
         <input v-model="filterNome" placeholder="Nome:" />
+        <span v-if="nomeErro" class="erro">{{ nomeErro }}</span>
       </label>
        <label>
         <span>Data Inícial*:</span>
         <input v-model="filterDataInicio" type="date" placeholder="Data Inícial:" />
+        <span v-if="dataInicioErro" class="erro">{{ dataInicioErro }}</span>
       </label>
        <label>
         <span>Data Final*:</span>
         <input v-model="filterDataFim" type="date" placeholder="Data Final:" />
+        <span v-if="dataFimErro" class="erro">{{ dataFimErro }}</span>
       </label>
       <button @click="pesquisar">Pesquisar</button>
       <button @click="limparFiltro">Limpar Filtro</button>
@@ -71,7 +74,9 @@ export default {
       filterDataInicio: '',
       filterDataFim: '',
       modalAberto: false,
-      classAtivo: true,
+      nomeErro: '',      
+      dataInicioErro: '', 
+      dataFimErro: '',   
     };
   },
   methods: {
@@ -80,10 +85,26 @@ export default {
       this.eventos = response.data;
     },
     async pesquisar() {
-      if (!this.filterNome || !this.filterDataInicio || !this.filterDataFim) {
-        alert('Todos os campos do filtro são obrigatórios.');
-        return;
+      this.nomeErro = '';
+      this.dataInicioErro = '';
+      this.dataFimErro = '';
+
+      let valid = true;
+
+      if (!this.filterNome) {
+        this.nomeErro = 'O campo Nome é obrigatório.';
+        valid = false;
       }
+      if (!this.filterDataInicio) {
+        this.dataInicioErro = 'O campo Data Inícial é obrigatório.';
+        valid = false;
+      }
+      if (!this.filterDataFim) {
+        this.dataFimErro = 'O campo Data Final é obrigatório.';
+        valid = false;
+      }
+
+      if (!valid) return;
 
       try {
         const response = await axios.get('/api/eventos/pesquisar', {
@@ -107,6 +128,9 @@ export default {
       this.filterDataInicio = '';
       this.filterDataFim = '';
       this.carregarEventos();
+      this.nomeErro = '';
+      this.dataInicioErro = '';
+      this.dataFimErro = '';
     },
     calcularDuracao(dataInicio, dataFim) {
       const dtInicio = new Date(dataInicio);
