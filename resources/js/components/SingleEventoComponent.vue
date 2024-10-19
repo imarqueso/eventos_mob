@@ -2,8 +2,8 @@
   <div>
     <h1>Detalhes do Evento</h1>
     <div>
-      <button @click="abaAtiva = 'dados'">Dados do Evento</button>
-      <button @click="abaAtiva = 'participantes'">Participantes</button>
+       <button @click="trocarAba('dados')">Dados do Evento</button>
+       <button @click="trocarAba('participantes')">Participantes</button>
     </div>
 
     <div v-if="abaAtiva === 'dados'">
@@ -111,6 +111,12 @@ export default {
     };
   },
   methods: {
+    trocarAba(aba) {
+      this.abaAtiva = aba;
+      this.modalAdicionarAberto = false;
+      this.modalEditarAberto = false;
+      this.modalPresencaAberto = false;
+    },
     async buscarEvento() {
       const response = await axios.get(`/api/eventos/${this.$route.params.id}/mostrar`);
       this.evento = response.data;
