@@ -1,16 +1,20 @@
 <template>
   <div class="modal">
-    <h2>Registrar Presença</h2>
-    <p><strong>Nome:</strong> {{ participante.nome }}</p>
-    <p><strong>CPF:</strong> {{ participante.cpf }}</p>
-
-    <form @submit.prevent="registrarPresenca">
-      <label for="data">Data</label>
-      <input v-model="presenca.data" id="data" type="date" required />
-
-      <button type="submit">Salvar</button>
-      <button type="button" @click="$emit('fechar')">Cancelar</button>
-    </form>
+    <div class="modal-conteudo">
+      <h2>Registrar Presença</h2>
+      <p><strong>Nome:</strong> {{ participante.nome }}</p>
+      <p><strong>CPF:</strong> {{ participante.cpf }}</p>
+      <form @submit.prevent="registrarPresenca">
+        <label>
+          <span>Data*:</span>
+          <input v-model="presenca.data" id="data" type="date" required />
+        </label>
+        <div class="btn-box">
+          <button type="submit">Salvar</button>
+          <button type="button" @click="$emit('fechar')">Cancelar</button>
+        </div>    
+      </form>
+    </div>
   </div>
 </template>
 
@@ -43,16 +47,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.modal {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1000;
-}
-</style>
