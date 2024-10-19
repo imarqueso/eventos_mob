@@ -3,20 +3,22 @@
     <div class="modal-conteudo">
       <h2>Cadastrar Novo Evento</h2>
       <form @submit.prevent="cadastrarEvento">
-        <div>
-          <label for="nome">Nome:</label>
+        <label>
+          <span>Nome*:</span>
           <input v-model="novoEvento.nome" />
-        </div>
-        <div>
-          <label for="dataInicio">Data Início:</label>
+        </label>
+        <label>
+          <span>Data Inicio*:</span>
           <input v-model="novoEvento.datainicio" type="date"/>
-        </div>
-        <div>
-          <label for="dataFim">Data Fim:</label>
+        </label>
+        <label>
+          <span>Data Final*:</span>
           <input v-model="novoEvento.datafim" type="date"/>
-        </div>
-        <button type="submit">Salvar</button>
-        <button type="button" @click="fecharModal">Cancelar</button>
+        </label>  
+        <div class="btn-box">
+          <button type="submit">Salvar</button>
+          <button type="button" @click="fecharModal">Cancelar</button>
+        </div>        
       </form>
     </div>
   </div>
@@ -86,23 +88,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.modal {
-  display: flex;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  justify-content: center;
-  align-items: center;
-}
-
-.modal-conteudo {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-}
-</style>

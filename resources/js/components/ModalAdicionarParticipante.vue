@@ -1,19 +1,26 @@
 <template>
   <div class="modal">
-    <h2>Adicionar Participante</h2>
-    <form @submit.prevent="salvarParticipante">
-      <label for="nome">Nome</label>
-      <input v-model="participante.nome" id="nome" type="text" required />
-
-      <label for="cpf">CPF</label>
-      <input v-model="participante.cpf" id="cpf" type="text" required />
-
-      <label for="email">E-mail</label>
-      <input v-model="participante.email" id="email" type="email" required />
-
-      <button type="submit">Salvar</button>
-      <button type="button" @click="$emit('fechar')">Cancelar</button>
-    </form>
+    <div class="modal-conteudo">
+      <h2>Adicionar Participante</h2>
+      <form @submit.prevent="salvarParticipante">
+        <label>
+          <span>Nome*:</span>
+          <input v-model="participante.nome" id="nome" type="text" required />
+        </label>
+        <label>
+          <span>CPF*:</span>
+          <input v-model="participante.cpf" id="cpf" type="text" required />
+        </label>
+        <label>
+          <span>E-mail*:</span>
+          <input v-model="participante.email" id="email" type="email" required />
+        </label>
+        <div class="btn-box">
+          <button type="submit">Salvar</button>
+          <button type="button" @click="$emit('fechar')">Cancelar</button>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -51,16 +58,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.modal {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1000;
-}
-</style>

@@ -1,37 +1,44 @@
 <template>
   <div class="modal">
-    <h2>Editar Participante</h2>
-    <form @submit.prevent="salvarParticipante">
-      <label for="nome">Nome:</label>
-      <input
-        type="text"
-        id="nome"
-        v-model="participante.nome"
-        placeholder="Nome"
-        required
-      />
-
-      <label for="email">Email:</label>
-      <input
-        type="email"
-        id="email"
-        v-model="participante.email"
-        placeholder="Email"
-        required
-      />
-
-      <label for="cpf">CPF:</label>
-      <input
-        type="text"
-        id="cpf"
-        v-model="participante.cpf"
-        placeholder="CPF"
-        required
-      />
-
-      <button type="submit">Salvar</button>
-      <button type="button" @click="fecharModal">Cancelar</button>
-    </form>
+    <div class="modal-conteudo">
+      <h2>Editar Participante</h2>
+      <form @submit.prevent="salvarParticipante">
+         <label>
+          <span>Nome*:</span>
+          <input
+          type="text"
+          id="nome"
+          v-model="participante.nome"
+          placeholder="Nome"
+          required
+          />
+        </label>
+        <label>
+          <span>E-mail*:</span>
+          <input
+          type="email"
+          id="email"
+          v-model="participante.email"
+          placeholder="Email"
+          required
+          />
+        </label>
+        <label>
+          <span>CPF*:</span>
+          <input
+          type="text"
+          id="cpf"
+          v-model="participante.cpf"
+          placeholder="CPF"
+          required
+          />
+        </label>
+        <div class="btn-box">
+          <button type="submit">Salvar</button>
+          <button type="button" @click="fecharModal">Cancelar</button>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 

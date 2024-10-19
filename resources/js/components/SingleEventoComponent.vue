@@ -4,8 +4,8 @@
       <h1>Detalhes do Evento</h1>
     </div>
     <div :class="{'abasBox': classAtivo}">
-       <button @click="trocarAba('dados')">Dados do Evento</button>
-       <button @click="trocarAba('participantes')">Participantes</button>
+       <button @click="trocarAba('dados')" :class="{'abaAtiva': abaAtiva === 'dados'}">Dados do Evento</button>
+       <button @click="trocarAba('participantes')" :class="{'abaAtiva': abaAtiva === 'participantes'}">Participantes</button>
     </div>
 
     <div v-if="abaAtiva === 'dados'" :class="{'abaDados': classAtivo}">
