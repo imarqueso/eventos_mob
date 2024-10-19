@@ -1,11 +1,22 @@
 <template>
-  <div>
-    <h1>Eventos</h1>
-    <button @click="abrirModal">Cadastrar Novo</button>
-    <div>
-      <input v-model="filterNome" placeholder="Nome:" />
-      <input v-model="filterDataInicio" type="date" placeholder="Data Inícial:" />
-      <input v-model="filterDataFim" type="date" placeholder="Data Final:" />
+  <div :class="{'main': classAtivo}">
+    <div :class="{'top': classAtivo}">
+      <h1>Eventos</h1>
+      <button @click="abrirModal">Cadastrar Novo</button>
+    </div>
+    <div :class="{'filtroBox': classAtivo}">
+      <label>
+        <span>Nome*:</span>
+        <input v-model="filterNome" placeholder="Nome:" />
+      </label>
+       <label>
+        <span>Data Inícial*:</span>
+        <input v-model="filterDataInicio" type="date" placeholder="Data Inícial:" />
+      </label>
+       <label>
+        <span>Data Final*:</span>
+        <input v-model="filterDataFim" type="date" placeholder="Data Final:" />
+      </label>
       <button @click="pesquisar">Pesquisar</button>
       <button @click="limparFiltro">Limpar Filtro</button>
     </div>
@@ -60,6 +71,7 @@ export default {
       filterDataInicio: '',
       filterDataFim: '',
       modalAberto: false,
+      classAtivo: true,
     };
   },
   methods: {

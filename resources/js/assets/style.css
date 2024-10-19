@@ -1,0 +1,154 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle, rgba(107, 138, 224, 1) 0%, rgba(26, 50, 116, 1) 100%);
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.main {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 80px 20px;
+}
+
+.top {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: auto;
+}
+
+h1 {
+  font-size: 26px;
+  font-weight: 600;
+  color: white;
+  text-align: left;
+  width: auto;
+  margin-right: 20px;
+}
+
+button {
+  width: auto;
+  height: 40px;
+  padding: 6px 12px;
+  outline: none;
+  border: 1px solid white;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  background-color: transparent;
+  transition: 0.5s ease all;
+}
+
+button:hover {
+  background-color: white;
+  transition: 0.5s ease all;
+  color: rgba(26, 50, 116, 1);
+}
+
+.filtroBox {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  border: 1px solid white;
+  padding: 40px 25px;
+  margin: 30px 0px 40px 0px;
+  border-radius: 6px;
+}
+
+label {
+  width: auto;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+label span {
+  width: auto;
+  font-size: 14px;
+  line-height: 20px;
+  color: white;
+  font-weight: 400;
+  text-align: left;
+  margin-bottom: 8px;
+}
+
+input {
+  width: 100%;
+  height: 40px;
+  background-color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  line-height: 20px;
+  color: #777676;
+  padding: 0px 15px;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.filtroBox label {
+  margin-right: 15px;
+}
+
+.filtroBox button {
+  margin-right: 15px;
+}
+
+table {
+  width: 100%;
+  min-width: 680px;
+  height: auto;
+  background-color: transparent;
+  border-collapse: collapse;
+  border: none;
+}
+
+th {
+  border: 1px solid white;
+  padding: 15px;
+  background-color: white;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: var(--primary);
+  line-height: 18px;
+  text-align: left;
+}
+
+td {
+  border: 1px solid #b9b8b8;
+  padding: 15px;
+  background-color: var(--light);
+  font-size: 14px;
+  text-transform: uppercase;
+  color: white;
+  line-height: 20px;
+  text-align: left;
+}
