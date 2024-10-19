@@ -1,28 +1,33 @@
 <template>
-  <div>
-    <h1>Detalhes do Evento</h1>
-    <div>
+  <div :class="{'main': classAtivo}">
+    <div :class="{'top': classAtivo}">
+      <h1>Detalhes do Evento</h1>
+    </div>
+    <div :class="{'abasBox': classAtivo}">
        <button @click="trocarAba('dados')">Dados do Evento</button>
        <button @click="trocarAba('participantes')">Participantes</button>
     </div>
 
-    <div v-if="abaAtiva === 'dados'">
+    <div v-if="abaAtiva === 'dados'" :class="{'abaDados': classAtivo}">
       <h2>Editar Evento</h2>
       <form @submit.prevent="salvarEvento">
-        <label for="nome">Nome do Evento</label>
-        <input v-model="evento.nome" id="nome" type="text" required />
-
-        <label for="datainicio">Data Início</label>
-        <input v-model="evento.datainicio" id="datainicio" type="date" required />
-
-        <label for="datafim">Data Fim</label>
-        <input v-model="evento.datafim" id="datafim" type="date" required />
-
+        <label>
+          <span>Nome*:</span>
+          <input v-model="evento.nome" id="nome" type="text" required />
+        </label>
+        <label>
+          <span>Data Inicial*:</span>
+          <input v-model="evento.datainicio" id="datainicio" type="date" required />
+        </label>
+        <label>
+          <span>Data Final*:</span>
+          <input v-model="evento.datafim" id="datafim" type="date" required />
+        </label>
         <button type="submit">Salvar</button>
       </form>
     </div>
 
-    <div v-if="abaAtiva === 'participantes'">
+    <div v-if="abaAtiva === 'participantes'" :class="{'abaParticipantes': classAtivo}">
       <h2>Participantes</h2>
       <button @click="abrirModalAdicionarParticipante">Adicionar Participante</button>
 
@@ -51,7 +56,7 @@
               <button @click="confirmarExclusaoParticipante(participante.id)">Excluir</button>
             </td>
             <td>
-              <button @click="abrirModalPresenca(participante)">Adicionar Presença</button>
+              <button @click="abrirModalPresenca(participante)">Adc. Presença</button>
             </td>
           </tr>
         </tbody>
@@ -102,6 +107,7 @@ export default {
         datainicio: '',
         datafim: '',
       },
+      classAtivo: true,
       participantes: [],
       modalAdicionarAberto: false,
       modalEditarAberto: false,

@@ -124,7 +124,7 @@ input {
 
 table {
   width: 100%;
-  min-width: 680px;
+  min-width: 650px;
   height: auto;
   background-color: transparent;
   border-collapse: collapse;
@@ -135,7 +135,7 @@ th {
   border: 1px solid white;
   padding: 15px;
   background-color: white;
-  font-size: 12px;
+  font-size: 14px;
   text-transform: uppercase;
   color: var(--primary);
   line-height: 18px;
@@ -146,9 +146,89 @@ td {
   border: 1px solid #b9b8b8;
   padding: 15px;
   background-color: var(--light);
-  font-size: 14px;
+  font-size: 16px;
   text-transform: uppercase;
   color: white;
   line-height: 20px;
   text-align: left;
+}
+
+.abasBox {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+.abasBox button {
+  margin-right: 10px;
+}
+
+.abaDados {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 60px 30px;
+  border: 1px solid white;
+  border-radius: 6px;
+  min-width: 650px;
+}
+
+h2 {
+  font-size: 22px;
+  font-weight: 600;
+  color: white;
+  text-align: left;
+  width: auto;
+  margin-bottom: 15px;
+}
+
+.abaDados h2 {
+  width: 550px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.abaDados form {
+  width: 550px;
+}
+
+.abaDados label {
+  margin-bottom: 15px;
+}
+
+.abaDados button {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.abaParticipantes {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 0px 0px 60px 0px;
+  min-width: 650px;
+}
+
+.abaParticipantes h2 {
+  margin-top: 20px;
+}
+
+.abaParticipantes button {
+  margin-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+
+.abaParticipantes table button {
+  margin-bottom: 0px;
 }
