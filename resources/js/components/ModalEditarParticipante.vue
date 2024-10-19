@@ -40,7 +40,7 @@
 import axios from 'axios';
 
 export default {
-  emits: ['sucesso'],
+  emits: ['sucesso', 'participanteAtualizado', 'fechar'],
   props: {
     participante: Object,
   },

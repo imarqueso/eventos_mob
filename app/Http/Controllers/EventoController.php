@@ -132,7 +132,27 @@ class EventoController extends Controller
 
   public function destroy($id)
   {
-    Evento::findOrFail($id)->delete();
-    return response()->json(['message' => 'Evento excluído com sucesso']);
+    try {
+      $evento = Evento::findOrFail($id);
+
+      foreach ($evento->participantes as $participante) {
+        $participante->presencas()->delete();
+      }
+      $evento->participantes()->delete();
+
+      $evento->delete();
+
+      return response()->json(['message' => 'Evento e dados relacionados excluídos com sucesso']);
+    } catch (\Illuminate\Validation\ValidationException $e) {
+      return response()->json([
+        'errors' => $e->errors()
+      ], 422);
+    } catch (\Exception $e) {
+      Log::error('Erro ao excluir o evento: ' . $e->getMessage(), [
+        'exception' => $e
+      ]);
+
+      return response()->json(['error' => 'Erro ao excluir o evento.'], 500);
+    }
   }
 }

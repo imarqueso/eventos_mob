@@ -1,4 +1,5 @@
 <template>
+  <span v-if="sucesso" class="sucesso">{{ sucesso }}</span>
   <div class="main">
     <div class="top">
       <h1>Eventos</h1>
@@ -10,12 +11,12 @@
         <input v-model="filterNome" placeholder="Nome:" />
         <span v-if="nomeErro" class="erro">{{ nomeErro }}</span>
       </label>
-       <label>
+      <label>
         <span>Data Inícial*:</span>
         <input v-model="filterDataInicio" type="date" placeholder="Data Inícial:" />
         <span v-if="dataInicioErro" class="erro">{{ dataInicioErro }}</span>
       </label>
-       <label>
+      <label>
         <span>Data Final*:</span>
         <input v-model="filterDataFim" type="date" placeholder="Data Final:" />
         <span v-if="dataFimErro" class="erro">{{ dataFimErro }}</span>
@@ -44,8 +45,8 @@
           <td>
             <button @click="editarEvento(evento.id)">Editar</button>
           </td>
-           <td>
-            <button @click="confirmarExclusao(evento.id)">Excluir</button>
+          <td>
+            <button @click="abrirModalExcluir(evento.id)">Excluir</button>
           </td>
         </tr>
       </tbody>
@@ -56,16 +57,26 @@
       :onClose="fecharModal"
       :onEventAdded="carregarEventos"
     />
+
+    <ModalExcluir
+      v-if="modalExcluirAberto"
+      :excluir="eventoIdParaExcluir"
+      @fechar="fecharModalExcluir"
+      @sucesso="exibirMensagemSucesso"
+      @eventoExcluido="carregarEventos"
+    />
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 import ModalCadastrarEvento from './ModalCadastrarEvento.vue';
+import ModalExcluir from './ModalExcluir.vue';
 
 export default {
   components: {
     ModalCadastrarEvento,
+    ModalExcluir,
   },
   data() {
     return {
@@ -74,12 +85,21 @@ export default {
       filterDataInicio: '',
       filterDataFim: '',
       modalAberto: false,
+      modalExcluirAberto: false,
+      eventoIdParaExcluir: null,
       nomeErro: '',      
       dataInicioErro: '', 
-      dataFimErro: '',   
+      dataFimErro: '',  
+      sucesso: '', 
     };
   },
   methods: {
+    exibirMensagemSucesso(mensagem) {
+      this.sucesso = mensagem;
+      setTimeout(() => {
+        this.sucesso = "";
+      }, 4000);
+    },
     async carregarEventos() {
       const response = await axios.get('/api/eventos');
       this.eventos = response.data;
@@ -141,17 +161,19 @@ export default {
     async editarEvento(eventoId) {
       this.$router.push({ name: 'eventoSingle', params: { id: eventoId } });
     },
-    async confirmarExclusao(id) {
-      if (confirm('Realmente deseja remover este registro?')) {
-        await axios.delete(`/api/eventos/${id}`);
-        this.carregarEventos();  // Atualizar os eventos após a exclusão
-      }
-    },
     abrirModal() {
       this.modalAberto = true;
     },
     fecharModal() {
       this.modalAberto = false;
+    },
+     fecharModalExcluir() {
+      this.modalExcluirAberto = false;
+      this.eventoIdParaExcluir = null;
+    },
+    abrirModalExcluir(id) {
+      this.eventoIdParaExcluir = id;
+      this.modalExcluirAberto = true;
     },
   },
   async mounted() {

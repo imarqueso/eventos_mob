@@ -23,7 +23,7 @@
 import axios from 'axios';
 
 export default {
-  emits: ['sucesso'],
+  emits: ['sucesso', 'presencaRegistrada', 'fechar'],
   props: {
     participante: Object,
   },
