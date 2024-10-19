@@ -7,7 +7,7 @@
       <input v-model="filterDataInicio" type="date" placeholder="Data Inícial:" />
       <input v-model="filterDataFim" type="date" placeholder="Data Final:" />
       <button @click="pesquisar">Pesquisar</button>
-      <button @click="carregarEventos">Limpar Filtro</button>
+      <button @click="limparFiltro">Limpar Filtro</button>
     </div>
 
     <table>
@@ -36,6 +36,7 @@
         </tr>
       </tbody>
     </table>
+
     <ModalCadastrarEvento
       :modalAberto="modalAberto"
       :onClose="fecharModal"
@@ -67,7 +68,6 @@ export default {
       this.eventos = response.data;
     },
     async pesquisar() {
-
       if (!this.filterNome || !this.filterDataInicio || !this.filterDataFim) {
         alert('Todos os campos do filtro são obrigatórios.');
         return;
@@ -90,22 +90,28 @@ export default {
         }
       }
     },
+    limparFiltro() {
+      this.filterNome = '';
+      this.filterDataInicio = '';
+      this.filterDataFim = '';
+      this.carregarEventos();
+    },
     calcularDuracao(dataInicio, dataFim) {
       const dtInicio = new Date(dataInicio);
       const dtFim = new Date(dataFim);
       const diffTime = Math.abs(dtFim - dtInicio);
       return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     },
-    async editarEvento(id) {
-      // lógica para editar evento
+    async editarEvento(eventoId) {
+      this.$router.push({ name: 'eventoSingle', params: { id: eventoId } });
     },
     async confirmarExclusao(id) {
       if (confirm('Realmente deseja remover este registro?')) {
         await axios.delete(`/api/eventos/${id}`);
-        this.pesquisar();
+        this.carregarEventos();  // Atualizar os eventos após a exclusão
       }
     },
-      abrirModal() {
+    abrirModal() {
       this.modalAberto = true;
     },
     fecharModal() {

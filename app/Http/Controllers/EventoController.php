@@ -65,6 +65,41 @@ class EventoController extends Controller
     return Evento::with('participantes')->findOrFail($id);
   }
 
+  public function mostrar($id)
+  {
+    $evento = Evento::with(['participantes.presencas'])->findOrFail($id);
+
+    $evento->participantes = $evento->participantes->map(function ($participante) use ($evento) {
+      $totalDiasEvento = $this->calcularTotalDiasEvento($evento->datainicio, $evento->datafim);
+      $diasComPresenca = $this->calcularDiasComPresenca($participante->presencas);
+
+      $participante->porcentagem_presenca = ($diasComPresenca / $totalDiasEvento) * 100;
+      return $participante;
+    });
+
+    return response()->json($evento);
+  }
+
+  private function calcularTotalDiasEvento($inicio, $fim)
+  {
+    $inicio = new \DateTime($inicio);
+    $fim = new \DateTime($fim);
+    $diff = $inicio->diff($fim);
+    return $diff->days + 1;
+  }
+
+  private function calcularDiasComPresenca($presencas)
+  {
+    $diasComPresenca = new \Illuminate\Support\Collection();
+
+    foreach ($presencas as $presenca) {
+      $dataPresenca = \Carbon\Carbon::parse($presenca->data)->toDateString();
+      $diasComPresenca->add($dataPresenca);
+    }
+
+    return $diasComPresenca->unique()->count();
+  }
+
   public function update(Request $request, $id)
   {
     $evento = Evento::findOrFail($id);
