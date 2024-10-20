@@ -57,10 +57,10 @@
               <button @click="editarParticipante(participante.id)">Editar</button>
             </td>
             <td>
-              <button @click="confirmarExclusaoParticipante(participante.id)">Excluir</button>
+              <button @click="abrirModalExcluir(participante.id)">Excluir</button>
             </td>
             <td>
-              <button @click="abrirModalExcluir(participante.id)">Excluir</button>
+              <button @click="abrirModalPresenca(participante)">Adc. Presença</button>
             </td>
           </tr>
         </tbody>
