@@ -61,9 +61,10 @@
     <ModalExcluir
       v-if="modalExcluirAberto"
       :excluir="eventoIdParaExcluir"
+      :rota="rotaExclusao"
       @fechar="fecharModalExcluir"
       @sucesso="exibirMensagemSucesso"
-      @eventoExcluido="carregarEventos"
+      @registroExcluido="carregarEventos"
     />
   </div>
 </template>
@@ -91,6 +92,7 @@ export default {
       dataInicioErro: '', 
       dataFimErro: '',  
       sucesso: '', 
+      rotaExclusao: null,
     };
   },
   methods: {
@@ -167,12 +169,13 @@ export default {
     fecharModal() {
       this.modalAberto = false;
     },
-     fecharModalExcluir() {
+    fecharModalExcluir() {
       this.modalExcluirAberto = false;
       this.eventoIdParaExcluir = null;
     },
     abrirModalExcluir(id) {
       this.eventoIdParaExcluir = id;
+      this.rotaExclusao = `/api/eventos/${id}`;
       this.modalExcluirAberto = true;
     },
   },

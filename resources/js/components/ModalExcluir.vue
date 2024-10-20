@@ -14,9 +14,10 @@
 import axios from 'axios';
 
 export default {
-  emits: ['sucesso', 'fechar', 'eventoExcluido'],
+  emits: ['sucesso', 'fechar', 'registroExcluido'],
   props: {
     excluir: Number,
+    rota: String,
   },
   data() {
     return {
@@ -26,12 +27,22 @@ export default {
     async excluirEvento() {
       if (this.excluir) {
         try {
-          await axios.delete(`/api/eventos/${this.excluir}`);
-          this.$emit('sucesso', 'Evento e dados relacionados excluídos com sucesso!');
-          this.$emit('eventoExcluido');
+          await axios.delete(this.rota);
+          this.$emit('sucesso', 'Registro(s) excluído(s) com sucesso!');
+          this.$emit('registroExcluido');
           this.$emit('fechar');
         } catch (error) {
-          console.error('Erro ao excluir o evento:', error);
+          this.$emit('registroExcluido');
+          if (error.response && error.response.status === 422) {
+              const errors = error.response.data.errors;
+            
+            if (errors.data) {
+              this.dataPresencaErro = errors.data[0];
+            }
+          } else {
+            console.error('Erro ao excluir o evento:', error);
+            alert('Erro ao excluir o evento. Tente novamente.');
+          }
         }
       }
     },

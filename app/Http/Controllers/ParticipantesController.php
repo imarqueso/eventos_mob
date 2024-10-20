@@ -77,7 +77,24 @@ class ParticipantesController extends Controller
 
   public function destroy($id)
   {
-    Participante::findOrFail($id)->delete();
-    return response()->json(['message' => 'Participante excluído com sucesso']);
+    try {
+      $participante = Participante::findOrFail($id);
+
+      $participante->presencas()->delete();
+
+      $participante->delete();
+
+      return response()->json(['message' => 'Participante e presenças excluídos com sucesso']);
+    } catch (\Illuminate\Validation\ValidationException $e) {
+      return response()->json([
+        'errors' => $e->errors()
+      ], 422);
+    } catch (\Exception $e) {
+      Log::error('Erro ao excluir participante: ' . $e->getMessage(), [
+        'exception' => $e
+      ]);
+
+      return response()->json(['error' => 'Erro ao excluir participante.'], 500);
+    }
   }
 }

@@ -60,7 +60,7 @@
               <button @click="confirmarExclusaoParticipante(participante.id)">Excluir</button>
             </td>
             <td>
-              <button @click="abrirModalPresenca(participante)">Adc. Presença</button>
+              <button @click="abrirModalExcluir(participante.id)">Excluir</button>
             </td>
           </tr>
         </tbody>
@@ -90,6 +90,15 @@
       @presencaRegistrada="buscarEvento"
       @sucesso="exibirMensagemSucesso"
     />
+
+     <ModalExcluir
+      v-if="modalExcluirAberto"
+      :excluir="participanteIdParaExcluir"
+      :rota="rotaExclusao"
+      @fechar="fecharModalExcluir"
+      @sucesso="exibirMensagemSucesso"
+      @registroExcluido="buscarEvento"
+    />
   </div>
 </template>
 
@@ -98,12 +107,14 @@ import axios from 'axios';
 import ModalAdicionarParticipante from './ModalAdicionarParticipante.vue';
 import ModalEditarParticipante from './ModalEditarParticipante.vue';
 import ModalPresenca from './ModalPresenca.vue';
+import ModalExcluir from './ModalExcluir.vue';
 
 export default {
   components: {
     ModalAdicionarParticipante,
     ModalEditarParticipante,
     ModalPresenca,
+    ModalExcluir,
   },
   props: ['id'],
   data() {
@@ -125,6 +136,9 @@ export default {
       dataInicioEventoEditErro: '',
       dataFimEventoEditErro: '',
       sucesso: '',
+      modalExcluirAberto: false,
+      participanteIdParaExcluir: null,
+      rotaExclusao: null,
     };
   },
   methods: {
@@ -211,6 +225,15 @@ export default {
     fecharModalPresenca() {
       this.modalPresencaAberto = false;
       this.buscarEvento();
+    },
+    abrirModalExcluir(id) {
+      this.participanteIdParaExcluir = id;
+      this.rotaExclusao = `/api/participantes/${id}`;
+      this.modalExcluirAberto = true;
+    },
+    fecharModalExcluir() {
+      this.modalExcluirAberto = false;
+      this.participanteIdParaExcluir = null;
     },
   },
   mounted() {
