@@ -104,6 +104,7 @@
 
 <script>
 import axios from 'axios';
+import { useRouter, useRoute } from 'vue-router';
 import ModalAdicionarParticipante from './ModalAdicionarParticipante.vue';
 import ModalEditarParticipante from './ModalEditarParticipante.vue';
 import ModalPresenca from './ModalPresenca.vue';
@@ -155,14 +156,23 @@ export default {
       this.modalPresencaAberto = false;
     },
     async buscarEvento() {
-      try {
-        const response = await axios.get(`/api/eventos/${this.$route.params.id}/mostrar`);
-        this.evento = response.data;
-        this.participantes = response.data.participantes;
-      } catch (error) {
-        console.error("Erro ao buscar evento", error);
-      }
+      const router = useRouter();
+      const route = useRoute();
 
+      try {
+        const response = await axios.get(`/api/eventos/${route.params.id}/mostrar`);
+        if (response.data) {
+          this.evento = response.data;
+        } else {
+          router.replace({ name: 'NotFound' });
+        }
+      } catch (error) {
+         if (error.response && error.response.status === 404) {
+          router.replace({ name: 'NotFound' });
+        } else {
+          console.error('Erro ao carregar evento:', error);
+        }
+      }
     },
     async salvarEvento() {
       this.nomeEventoEditErro = '';

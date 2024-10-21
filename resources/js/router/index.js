@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import EventoComponent from '../components/EventoComponent.vue';
 import SingleEventoComponent from '../components/SingleEventoComponent.vue';
+import NotFoundComponent from '../components/NotFoundComponent.vue';
 
 const routes = [
   {
@@ -13,6 +14,11 @@ const routes = [
     name: 'eventoSingle',
     component: SingleEventoComponent,
     props: true,
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: NotFoundComponent,
   },
 ];
 
