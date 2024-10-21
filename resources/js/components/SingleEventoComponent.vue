@@ -5,8 +5,8 @@
       <h1>Detalhes do Evento</h1>
     </div>
     <div class="abasBox">
-       <button @click="trocarAba('dados')" :class="{'abaAtiva': abaAtiva === 'dados'}">Dados do Evento</button>
-       <button @click="trocarAba('participantes')" :class="{'abaAtiva': abaAtiva === 'participantes'}">Participantes</button>
+      <button @click="trocarAba('dados')" :class="{'abaAtiva': abaAtiva === 'dados'}">Dados do Evento</button>
+      <button @click="trocarAba('participantes')" :class="{'abaAtiva': abaAtiva === 'participantes'}">Participantes</button>
     </div>
 
     <div v-if="abaAtiva === 'dados'" class="abaDados">
@@ -91,7 +91,7 @@
       @sucesso="exibirMensagemSucesso"
     />
 
-     <ModalExcluir
+    <ModalExcluir
       v-if="modalExcluirAberto"
       :excluir="participanteIdParaExcluir"
       :rota="rotaExclusao"
@@ -126,7 +126,6 @@ export default {
         datainicio: '',
         datafim: '',
       },
-      classAtivo: true,
       participantes: [],
       modalAdicionarAberto: false,
       modalEditarAberto: false,
@@ -160,7 +159,7 @@ export default {
       const route = useRoute();
 
       try {
-        const response = await axios.get(`/api/eventos/${route.params.id}/mostrar`);
+        const response = await axios.get(`/api/eventos/${this.$route.params.id}/mostrar`);
         if (response.data) {
           this.evento = response.data;
           this.participantes = response.data.participantes;
@@ -179,12 +178,10 @@ export default {
       this.nomeEventoEditErro = '';
       this.dataInicioEventoEditErro = '';
       this.dataFimEventoEditErro = '';
+      const route = useRoute(); // Obtém o route aqui
 
       try {
         await axios.put(`/api/eventos/${this.$route.params.id}`, this.evento);
-        this.nomeEventoEditErro = '';
-        this.dataInicioEventoEditErro = '';
-        this.dataFimEventoEditErro = '';
         this.sucesso = 'Evento atualizado com sucesso!';
         
         setTimeout(() => {
@@ -192,8 +189,8 @@ export default {
         }, 4000);
       } catch (error) {
         if (error.response && error.response.status === 422) {
-            const errors = error.response.data.errors;
-          
+          const errors = error.response.data.errors;
+
           if (errors.nome) {
             this.nomeEventoEditErro = errors.nome[0];
           }
@@ -222,12 +219,6 @@ export default {
     fecharModalEditarParticipante() {
       this.modalEditarAberto = false;
       this.buscarEvento();
-    },
-    confirmarExclusaoParticipante(id) {
-      if (confirm('Realmente deseja remover este participante?')) {
-        axios.delete(`/api/participantes/${id}`);
-        this.buscarEvento(); 
-      }
     },
     abrirModalPresenca(participante) {
       this.modalPresencaAberto = true;

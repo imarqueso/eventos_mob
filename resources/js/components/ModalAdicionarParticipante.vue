@@ -31,7 +31,7 @@
 import axios from 'axios';
 
 export default {
-  emits: ['fechar', 'participanteAdicionado', 'sucesso'],
+  emits: ['fechar', 'sucesso'],
   props: {
     eventoId: {
       type: Number,
@@ -61,13 +61,9 @@ export default {
       try {      
         await axios.post('/api/participantes', this.participante);
         this.$emit('sucesso', 'Participante adicionado com sucesso!'); 
-        this.$emit('participanteAdicionado'); 
-        this.$emit('fechar');
-        this.nomeParticipanteErro = '';
-        this.cpfParticipanteErro = '';
-        this.emailParticipanteErro = '';
+        this.fecharModal();  // Chame fecharModal diretamente
+        this.participante = { nome: '', cpf: '', email: '', evento_id: this.eventoId }; // Reseta o participante
       } catch (error) {
-        this.$emit('participanteAdicionado'); 
         if (error.response && error.response.status === 422) {
           const errors = error.response.data.errors;
           
