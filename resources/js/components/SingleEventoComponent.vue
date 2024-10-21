@@ -163,6 +163,7 @@ export default {
         const response = await axios.get(`/api/eventos/${route.params.id}/mostrar`);
         if (response.data) {
           this.evento = response.data;
+          this.participantes = response.data.participantes;
         } else {
           router.replace({ name: 'NotFound' });
         }
