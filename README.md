@@ -40,7 +40,7 @@ dados e rodar o comando php artisan migrate).
 
    ```php artisan serve```
 
-10. **Acessar o projeto no navegador.**[
+10. **Acessar o projeto no navegador.**
 
 
 
