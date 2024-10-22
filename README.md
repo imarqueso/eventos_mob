@@ -32,7 +32,7 @@ Siga os passos abaixo para configurar e executar localmente.
 
    ```php artisan key:generate```
    
-7. **criar a tabela no PostgreSQL e inserir os dados de aesso no .env depois rodar o comando:**.
+7. **criar a tabela no PostgreSQL e inserir os dados de acesso no .env depois rodar o comando:**.
 
    ```php artisan migrate```
 
