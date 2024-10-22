@@ -26,7 +26,7 @@ Siga os passos abaixo para configurar e executar localmente.
 
 5. **Clonar o arquivo .env-example para o .env:**
 
-  ```cp .env-example .env```
+   ```cp .env-example .env```
 
 6. **Rodar o comando para gerar a key caso necessário:**
 
@@ -34,7 +34,7 @@ Siga os passos abaixo para configurar e executar localmente.
    
 7. **criar a tabela no PostgreSQL e inserir os dados de aesso no .env depois rodar o comando:**.
 
-```php artisan migrate```
+   ```php artisan migrate```
 
 8. **Rodar o comando para iniciar o projeto com npm:**
 
