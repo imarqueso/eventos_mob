@@ -1,5 +1,9 @@
 # Eventos Mob Solution
 
+## Tecnologias utilizadas
+
+**- Laravel, Vue.js e PostgreSQL**
+
 ## Instalação
 
 Siga os passos abaixo para configurar e executar localmente.
