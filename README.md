@@ -32,9 +32,9 @@ Siga os passos abaixo para configurar e executar localmente.
 
    ```php artisan key:generate```
    
-7. Subir o dump do banco de dados postgreSQL que enviei ou criar a tabela e
-inserir os dados no .env (caso decida criar a tabela sem o dump, inserir os
-dados e rodar o comando php artisan migrate).
+7. **criar a tabela no PostgreSQL e inserir os dados de aesso no .env depois rodar o comando:**.
+
+```php artisan migrate```
 
 8. **Rodar o comando para iniciar o projeto com npm:**
 
