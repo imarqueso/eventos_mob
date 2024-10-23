@@ -1,4 +1,4 @@
-# Eventos Mob Solution
+# CRUD Eventos
 
 ## Tecnologias utilizadas
 
